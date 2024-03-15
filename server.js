@@ -4,6 +4,7 @@ import express from 'express'
 import morgan from 'morgan'
 
 import authRouter from './app/auth/auth.routes.js'
+import categoryRouter from './app/category/category.routes.js'
 import developerRouter from './app/developer/developer.routes.js'
 import { errorHandler, notFound } from './app/middleware/error.middleware.js'
 import { prisma } from './app/prisma.js'
@@ -20,6 +21,7 @@ async function main() {
 
   app.use('/api/auth', authRouter)
   app.use('/api/developers', developerRouter)
+  app.use('/api/categories', categoryRouter)
 
   app.use(notFound)
   app.use(errorHandler)
