@@ -10,12 +10,74 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Role {
+  id     Int    @id @default(autoincrement())
+  name   String @unique
+  userId User[]
+
+  @@map("Roles")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+
+  role   Role? @relation(fields: [roleId], references: [id])
+  roleId Int?
+
+  reviews Review[]
+
+  @@map("Users")
+}
+
+model Review {
+  id         Int     @id @default(autoincrement())
+  review     String
+  estimation Boolean
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
+
+  @@map("Reviews")
+}
+
+model Developer {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  games Game[]
+
+  @@map("Developers")
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  games Game[]
+
+  @@map("Categories")
+}
+
 model Game {
-  id Int @id @default(autoincrement())
-
+  id          Int     @id @default(autoincrement())
   name        String  @unique
-  description String?
+  descriprion String
+  price       Decimal
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  releaseDate DateTime @default(now())
+
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+
+  developer   Developer? @relation(fields: [developerId], references: [id])
+  developerId Int?
+
+  reviews Review[]
+
+  @@map("Games")
 }
