@@ -26,7 +26,7 @@ export const createDeveloper = asyncHandler(async (req, res) => {
 export const getAllDevelopers = asyncHandler(async (req, res) => {
   const developers = await prisma.developer.findMany({
     orderBy: {
-      name: 'asc'
+      id: 'asc'
     }
   })
 
@@ -46,7 +46,7 @@ export const getDeveloperById = asyncHandler(async (req, res) => {
       }
     })
 
-    res.json({ developer })
+    res.json(developer)
   } catch (error) {
     res.status(404)
     throw new Error('Developer not found!')
