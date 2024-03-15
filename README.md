@@ -9,6 +9,9 @@ Write the `yarn` command to download all packages.
 Create a `.env` file with the following contents:
 
 ```env
+# Auth
+JWT_SECRET=somesecrettext
+
 # Server
 NODE_ENV=development
 PORT=3000
