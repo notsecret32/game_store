@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import { prisma } from '../prisma.js'
-import { userSelectedFields } from '../utils/user-select.utils.js'
+import { userSelectedFields } from '../utils/selectable-fields.utils.js'
 
 /**
  * Get all users

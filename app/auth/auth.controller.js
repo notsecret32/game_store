@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler'
 
 import { prisma } from '../prisma.js'
 import { generateToken } from '../utils/generate-token.utils.js'
-import { userSelectedFields } from '../utils/user-select.utils.js'
+import { userSelectedFields } from '../utils/selectable-fields.utils.js'
 
 /**
  * Auth user.
