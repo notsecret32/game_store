@@ -3,21 +3,21 @@ import express from 'express'
 import { protect } from '../middleware/auth.middleware.js'
 import {
   createDeveloper,
+  deleteDeveloperById,
   getAllDevelopers,
   getDeveloperById,
-  updateDeveloperById,
-  deleteDeveloperById
+  updateDeveloperById
 } from './developer.controller.js'
 
 const router = express.Router()
 
 // Route: /api/developers
-router.route('/').get(protect, getAllDevelopers).post(protect, createDeveloper)
+router.route('/').get(getAllDevelopers).post(protect, createDeveloper)
 
 // Route: /api/developers/:id
 router
   .route('/:id')
-  .get(protect, getDeveloperById)
+  .get(getDeveloperById)
   .put(protect, updateDeveloperById)
   .delete(protect, deleteDeveloperById)
 
