@@ -11,22 +11,32 @@ import { userSelectedFields } from '../utils/selectable-fields.utils.js'
  * @access Public
  */
 export const authUser = asyncHandler(async (req, res) => {
-  const { username, password } = req.body
+  try {
+    const { username, password } = req.body
 
-  const user = await prisma.user.findUnique({
-    where: {
-      username
+    const user = await prisma.user.findUnique({
+      where: {
+        username
+      }
+    })
+
+    if (!user) {
+      return res.status(400).json({ message: 'User not exists' })
     }
-  })
 
-  const isValidPassword = await verify(user.password, password)
+    const isValidPassword = await verify(user.password, password)
 
-  if (user && isValidPassword) {
+    if (!isValidPassword) {
+      return res
+        .status(401)
+        .json({ message: 'Username and password are not correct' })
+    }
+
     const token = generateToken(user.id)
-    res.json({ user, token })
-  } else {
-    res.status(401)
-    throw new Error('Username and password are not correct')
+    res.cookie('token', token)
+    res.status(200).json({ user, token })
+  } catch (error) {
+    res.status(400).json({ message: error.message })
   }
 })
 
@@ -36,29 +46,32 @@ export const authUser = asyncHandler(async (req, res) => {
  * @access Public
  */
 export const registerUser = asyncHandler(async (req, res) => {
-  const { username, password, role } = req.body
+  try {
+    const { username, password, role } = req.body
 
-  const isUserExist = await prisma.user.findUnique({
-    where: {
-      username
+    const isUserExist = await prisma.user.findUnique({
+      where: {
+        username
+      }
+    })
+
+    if (isUserExist) {
+      return res.status(400).json({ message: 'User already exists' })
     }
-  })
 
-  if (isUserExist) {
-    res.status(400)
-    throw new Error('User already exists')
+    const user = await prisma.user.create({
+      data: {
+        username: username,
+        password: await hash(password),
+        role: role
+      },
+      select: userSelectedFields
+    })
+
+    const token = generateToken(user.id)
+    res.cookie('token', token)
+    res.json({ user, token })
+  } catch (error) {
+    res.status(400).json({ message: error.message })
   }
-
-  const user = await prisma.user.create({
-    data: {
-      username: username,
-      password: await hash(password),
-      role: role
-    },
-    select: userSelectedFields
-  })
-
-  const token = generateToken(user.id)
-
-  res.json({ user, token })
 })
