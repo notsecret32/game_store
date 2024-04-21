@@ -3,7 +3,14 @@ import dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
 
+import authRouter from './app/auth/auth.routes.js'
+import categoryRouter from './app/category/category.routes.js'
+import developerRouter from './app/developer/developer.routes.js'
+import gameRouter from './app/game/game.routes.js'
+import { errorHandler, notFound } from './app/middleware/error.middleware.js'
 import { prisma } from './app/prisma.js'
+import reviewRouter from './app/review/review.routes.js'
+import userRouter from './app/user/user.routes.js'
 
 dotenv.config()
 
@@ -15,9 +22,15 @@ async function main() {
   app.use(cors())
   app.use(express.json())
 
-  app.get('/', (req, res) => {
-    res.json({ message: 'Everything works' })
-  })
+  app.use('/api/auth', authRouter)
+  app.use('/api/games', gameRouter)
+  app.use('/api/reviews', reviewRouter)
+  app.use('/api/developers', developerRouter)
+  app.use('/api/categories', categoryRouter)
+  app.use('/api/users', userRouter)
+
+  app.use(notFound)
+  app.use(errorHandler)
 
   const PORT = process.env.PORT || 5000
 
