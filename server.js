@@ -1,3 +1,4 @@
+import cookie from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
@@ -21,6 +22,7 @@ async function main() {
 
   app.use(cors())
   app.use(express.json())
+  app.use(cookie())
 
   app.use('/api/auth', authRouter)
   app.use('/api/games', gameRouter)
@@ -49,3 +51,5 @@ main()
     await prisma.$disconnect()
     process.exit(1)
   })
+
+export { app }
