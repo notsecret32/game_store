@@ -17,19 +17,19 @@ import {
 const router = Router()
 
 // Route: /api/games
-router.route('/').get(protect, getAllGames).post(protect, createGame)
+router.route('/').get(getAllGames).post(protect, createGame)
 
 // Route: /api/games/:id
 router
   .route('/:id')
-  .get(protect, getGameById)
+  .get(getGameById)
   .patch(protect, updateGameById)
   .delete(protect, deleteGameById)
 
 // Route: /api/games/:id/reviews
 router
   .route('/:id/reviews')
-  .get(protect, getAllReviews)
+  .get(getAllReviews)
   .post(protect, addReview)
   .patch(protect, updateReview)
   .delete(protect, deleteReview)

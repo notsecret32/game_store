@@ -2,21 +2,21 @@ import express from 'express'
 
 import { protect } from '../middleware/auth.middleware.js'
 import {
+  deleteUserById,
   getAllUsers,
   getUserById,
-  updateUser,
-  deleteUserById
+  updateUser
 } from './user.controller.js'
 
 const router = express.Router()
 
 // Route: /api/users
-router.route('/').get(protect, getAllUsers)
+router.route('/').get(getAllUsers)
 
 // Route: /api/users/:id
 router
   .route('/:id')
-  .get(protect, getUserById)
+  .get(getUserById)
   .put(protect, updateUser)
   .delete(protect, deleteUserById)
 
