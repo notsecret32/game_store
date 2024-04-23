@@ -12,12 +12,12 @@ import {
 const router = express.Router()
 
 // Route: /api/categories
-router.route('/').get(protect, getAllCategories).post(protect, createCategory)
+router.route('/').get(getAllCategories).post(protect, createCategory)
 
 // Route: /api/categories/:id
 router
   .route('/:id')
-  .get(protect, getCategoryById)
+  .get(getCategoryById)
   .put(protect, updateCategoryById)
   .delete(protect, deleteCategoryById)
 
